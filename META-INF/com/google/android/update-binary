@@ -20,7 +20,7 @@ require_new_magisk() {
 }
 
 is_legacy_script() {
-  unzip -l "$ZIPFILE" install.sh | grep -q install.sh
+  unzip -l "$ZIPFILE" customize.sh | grep -q customize.sh
   return $?
 }
 
@@ -84,7 +84,7 @@ if is_legacy_script; then
   unzip -oj "$ZIPFILE" module.prop customize.sh uninstall.sh 'common/*' -d $TMPDIR >&2
 
   # Load install script
-  . $TMPDIR/install.sh
+  . $TMPDIR/customize.sh
 
   # Callbacks
   print_modname
@@ -155,6 +155,18 @@ $MODPATH/README.md $MODPATH/.git* 2>/dev/null
 ##########################################################################################
 # 𝐅𝐈𝐍𝐀𝐋𝐈𝐙𝐈𝐍𝐆
 ##########################################################################################
+
+# SET
+cp '/system/etc/init/*.rc' '/data/adb/modules/INIT-OPTIMIZATION/system/etc/init/'
+cp '/system/product/etc/init/*.rc' '/data/adb/modules/INIT-OPTIMIZATION/system/product/etc/init/'
+cp '/system/vendor/etc/init/*.rc' '/data/adb/modules/INIT-OPTIMIZATION/system/vendor/etc/init/'
+cp '/system/system_ext/etc/init/*.rc' '/data/adb/modules/INIT-OPTIMIZATION/system/system_ext/etc/init/'
+
+# SET INIT
+sed -i "s/#.*//g" '/data/adb/modules/INIT-OPTIMIZATION/system/etc/init/*'
+sed -i "s/#.*//g" '/data/adb/modules/INIT-OPTIMIZATION/system/product/etc/init/*'
+sed -i "s/#.*//g" '/data/adb/modules/INIT-OPTIMIZATION/system/system_ext/etc/init/*'
+sed -i "s/#.*//g" '/data/adb/modules/INIT-OPTIMIZATION/system/vendor/etc/init/*'
 
 # Finished print 
 cd /
